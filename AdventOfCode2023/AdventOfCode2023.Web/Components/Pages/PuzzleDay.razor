@@ -1,0 +1,65 @@
+@page "/day/{dayId:int}"
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+@attribute [StreamRendering]
+
+@inject AdventOfCodeApiClient AdventOfCodeApi
+
+<PageTitle>Day @DayId</PageTitle>
+
+<h1>Day @DayId Puzzle</h1>
+
+@if (daysPuzzleData is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                @foreach (var puzzle in daysPuzzleData.Puzzles)
+                {
+                    <li class="nav-item">
+                        <button class="@(selectedPuzzle?.Id == puzzle.Id ? "nav-link active" : "nav-link")"
+                           @onclick="() => SetSelectedPuzzle(puzzle.Id)"
+                           @onclick:preventDefault
+                           @onclick:stopPropagation>
+                                @puzzle.Name
+                        </button>
+                    </li>
+                }
+            </ul>
+        </div>
+        <PuzzleCardBody PuzzleDetails=selectedPuzzle />
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int DayId { get; set; }
+    
+    private AdventOfCodeDay? daysPuzzleData;
+    private Puzzle? selectedPuzzle;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (daysPuzzleData is null)
+        {
+            daysPuzzleData = await AdventOfCodeApi.GetPuzzleDataForDay(DayId);
+            selectedPuzzle = daysPuzzleData.Puzzles.FirstOrDefault();
+        }
+    }
+
+    private void SetSelectedPuzzle(int id)
+    {
+        if (daysPuzzleData?.Puzzles is null || !daysPuzzleData.Puzzles.Any())
+        {
+            return;
+        }
+        else
+        {
+            selectedPuzzle = daysPuzzleData.Puzzles.First(m => m.Id == id);
+        }
+    }
+}

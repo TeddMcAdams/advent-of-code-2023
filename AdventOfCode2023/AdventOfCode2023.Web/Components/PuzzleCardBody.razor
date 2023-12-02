@@ -1,0 +1,23 @@
+<div class="card-body">
+    <h5 class="card-title">Solution: <code>@PuzzleDetails.Solution</code></h5>
+    <h6 class="card-subtitle mb-2 mx-2 text-muted">Run time: <code>@PuzzleDetails.ElapsedRunTime.ToString()</code></h6>
+
+    <div class="card">
+        <div class="card-header">
+            Input
+        </div>
+        <div class="card-body">
+            <pre><code>
+            @foreach (var inputLine in PuzzleDetails.Input)
+            {
+                @(inputLine + Environment.NewLine)
+            }
+            </code></pre>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Puzzle PuzzleDetails { get; set; } = Puzzle.EmptyPuzzle;
+}
