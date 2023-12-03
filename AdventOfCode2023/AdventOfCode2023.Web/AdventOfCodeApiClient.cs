@@ -13,7 +13,7 @@ public record AdventOfCodeDay(int DayId, IList<Puzzle> Puzzles)
     public static AdventOfCodeDay EmptyDay(int dayId) => new(dayId, new List<Puzzle>());
 }
 
-public record Puzzle(int Id, string Name, IList<string> Input, string Solution, TimeSpan ElapsedRunTime)
+public record Puzzle(int Type, string Name, IList<string> Input, string Solution, TimeSpan ElapsedRunTime)
 {
     public static Puzzle EmptyPuzzle => new(-1, string.Empty, [], string.Empty, default);
 }
