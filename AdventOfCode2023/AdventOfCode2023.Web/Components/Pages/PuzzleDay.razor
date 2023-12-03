@@ -21,8 +21,8 @@ else
                 @foreach (var puzzle in daysPuzzleData.Puzzles)
                 {
                     <li class="nav-item">
-                        <button class="@(selectedPuzzle?.Id == puzzle.Id ? "nav-link active" : "nav-link")"
-                           @onclick="() => SetSelectedPuzzle(puzzle.Id)"
+                        <button class="@(selectedPuzzle?.Type == puzzle.Type ? "nav-link active" : "nav-link")"
+                           @onclick="() => SetSelectedPuzzle(puzzle.Type)"
                            @onclick:preventDefault
                            @onclick:stopPropagation>
                                 @puzzle.Name
@@ -51,7 +51,7 @@ else
         }
     }
 
-    private void SetSelectedPuzzle(int id)
+    private void SetSelectedPuzzle(int type)
     {
         if (daysPuzzleData?.Puzzles is null || !daysPuzzleData.Puzzles.Any())
         {
@@ -59,7 +59,7 @@ else
         }
         else
         {
-            selectedPuzzle = daysPuzzleData.Puzzles.First(m => m.Id == id);
+            selectedPuzzle = daysPuzzleData.Puzzles.First(m => m.Type == type);
         }
     }
 }

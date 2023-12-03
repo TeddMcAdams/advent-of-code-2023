@@ -1,23 +1,31 @@
-using AdventOfCode2023.ApiService.Puzzles;
-
 namespace AdventOfCode2023.ApiService.Puzzles.Solutions;
 
-public class Day1 : ISolutionRunner
+public class Day1 : SolutionBase
 {
-
-
-    public string RunExample()
+    public Day1() : base(nameof(Day1))
     {
-        throw new NotImplementedException();
     }
 
-    public string RunPartOne()
+    public override string SolveExample(IList<string> examplePuzzleInput)
     {
-        throw new NotImplementedException();
+        return InitialSolutionForPartOne(examplePuzzleInput);
     }
 
-    public string RunPartTwo()
+    public override string SolvePartOne(IList<string> puzzleInput)
     {
-        throw new NotImplementedException();
+        return InitialSolutionForPartOne(puzzleInput);
+    }
+
+    public override string SolvePartTwo(IList<string> puzzleInput)
+    {
+        return "TBD";
+    }
+
+    private static string InitialSolutionForPartOne(IList<string> puzzleInput)
+    {
+        return puzzleInput
+            .Select(m => $"{m.First(n => char.IsDigit(n))}{m.Last(o => char.IsDigit(o))}")
+			.Select(int.Parse).Sum()
+            .ToString();
     }
 }

@@ -7,10 +7,17 @@
             Input
         </div>
         <div class="card-body">
-            <pre><code>
-            @foreach (var inputLine in PuzzleDetails.Input)
+            <pre class="my-0"><code>
+            @for (int i = 0; i < PuzzleDetails.Input.Count; i++)
             {
-                @(inputLine + Environment.NewLine)
+                if (i + 1 == PuzzleDetails.Input.Count)
+                {
+                    @(PuzzleDetails.Input[i])
+                }
+                else
+                {
+                    @(PuzzleDetails.Input[i] + Environment.NewLine)
+                }
             }
             </code></pre>
         </div>
