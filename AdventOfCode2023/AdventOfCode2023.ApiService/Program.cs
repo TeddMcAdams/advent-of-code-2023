@@ -20,6 +20,11 @@ app.UseExceptionHandler();
 
 app.MapGet("/day/{id}", (SolutionResolver solutionResolver, int id) =>
 {
+    if (id < 1 || id > 25)
+    {
+        return new AdventOfCodeDay(0, []);
+    }
+
     var solution = solutionResolver(id);
 
     // Retrieve puzzle inputs
