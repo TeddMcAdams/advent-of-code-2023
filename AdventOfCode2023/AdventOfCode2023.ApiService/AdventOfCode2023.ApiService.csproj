@@ -11,4 +11,13 @@
     <ProjectReference Include="..\AdventOfCode2023.ServiceDefaults\AdventOfCode2023.ServiceDefaults.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Puzzles\Inputs\Day1Example.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Puzzles\Inputs\Day1Input.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
