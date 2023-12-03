@@ -1,13 +1,30 @@
 namespace AdventOfCode2023.ApiService.Puzzles.Solutions;
 
-public abstract class SolutionBase(string DayId) : ISolution
+public abstract class SolutionBase(string DayName) : ISolution
 {
-    private readonly string _examplePuzzleInputFileName = $"{DayId}Example.txt";
-    private readonly string _puzzleInputFileName = $"{DayId}Input.txt";
+    private readonly string _examplePuzzleInputFileName = $"{DayName}Example.txt";
+    private readonly string _puzzleInputFileName = $"{DayName}Input.txt";
 
-    public abstract string SolveExample(IList<string> puzzleInput);
-    public abstract string SolvePartOne(IList<string> puzzleInput);
-    public abstract string SolvePartTwo(IList<string> puzzleInput);
+    public string LinkToAdventOfCodeDay => $"https://adventofcode.com/2023/day/{DayName[3..]}";
+    public string LinkToSolutionCode => $"https://github.com/TeddMcAdams/advent-of-code-2023/blob/main/AdventOfCode2023/AdventOfCode2023.ApiService/Puzzles/Solutions/{DayName}.cs";
+
+    public string SolveExample(IList<string> examplePuzzleInput)
+    {
+        return InitialSolutionForPartOne(examplePuzzleInput);
+    }
+
+    public string SolvePartOne(IList<string> puzzleInput)
+    {
+        return InitialSolutionForPartOne(puzzleInput);
+    }
+
+    public string SolvePartTwo(IList<string> puzzleInput)
+    {
+        return FinalSolutionForPartTwo(puzzleInput);
+    }
+
+    private protected abstract string InitialSolutionForPartOne(IList<string> puzzleInput);
+    private protected abstract string FinalSolutionForPartTwo(IList<string> puzzleInput);
 
     public IList<string> RetrievePuzzleInput(SolutionType solutionType = SolutionType.PartOne)
     {

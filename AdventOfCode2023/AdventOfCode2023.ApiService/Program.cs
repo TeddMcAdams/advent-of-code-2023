@@ -22,7 +22,7 @@ app.MapGet("/day/{id}", (SolutionResolver solutionResolver, int id) =>
 {
     if (id < 1 || id > 25)
     {
-        return new AdventOfCodeDay(0, []);
+        return new AdventOfCodeDay(0, string.Empty, string.Empty, []);
     }
 
     var solution = solutionResolver(id);
@@ -52,21 +52,21 @@ app.MapGet("/day/{id}", (SolutionResolver solutionResolver, int id) =>
 
     Puzzle partTwoPuzzle = new(SolutionType.PartTwo, SolutionType.PartTwo.ToFriendlyName(), input, partTwoAnswer, partTwoStopWatch.Elapsed);
 
-    return new AdventOfCodeDay(id, new List<Puzzle> { examplePuzzle, partOnePuzzle, partTwoPuzzle });
+    return new AdventOfCodeDay(id, solution.LinkToAdventOfCodeDay, solution.LinkToSolutionCode, new List<Puzzle> { examplePuzzle, partOnePuzzle, partTwoPuzzle });
 });
 
 app.MapDefaultEndpoints();
 
 app.Run();
 
-record AdventOfCodeDay(int DayId, IList<Puzzle> Puzzles)
+record AdventOfCodeDay(int DayId, string LinkToAdventOfCodeDay, string LinkToSolutionCode, IList<Puzzle> Puzzles)
 {
 
 }
 
-record Puzzle(SolutionType Type, string Name, IList<string> Input, string Solution, TimeSpan ElapsedRunTime)
+record Puzzle(SolutionType Type, string Name, IList<string> Input, string Answer, TimeSpan ElapsedRunTime)
 {
-    // public static Puzzle EmptyPuzzle => new(0, "Empty", [], string.Empty, default);
+
 }
 
 // var summaries = new[]

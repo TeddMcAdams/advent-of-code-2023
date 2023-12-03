@@ -21,22 +21,7 @@ public class Day1 : SolutionBase
     {
     }
 
-    public override string SolveExample(IList<string> examplePuzzleInput)
-    {
-        return InitialSolutionForPartOne(examplePuzzleInput);
-    }
-
-    public override string SolvePartOne(IList<string> puzzleInput)
-    {
-        return InitialSolutionForPartOne(puzzleInput);
-    }
-
-    public override string SolvePartTwo(IList<string> puzzleInput)
-    {
-        return FinalSolutionForPartTwo(puzzleInput);
-    }
-
-    private static string InitialSolutionForPartOne(IList<string> puzzleInput)
+    private protected override string InitialSolutionForPartOne(IList<string> puzzleInput)
     {
         return puzzleInput
             .Select(m => $"{m.First(n => char.IsDigit(n))}{m.Last(o => char.IsDigit(o))}")
@@ -44,7 +29,7 @@ public class Day1 : SolutionBase
             .ToString();
     }
 
-    private static string FinalSolutionForPartTwo(IList<string> puzzleInput)
+    private protected override string FinalSolutionForPartTwo(IList<string> puzzleInput)
     {
         int sum = 0;
 

@@ -8,12 +8,12 @@ public class AdventOfCodeApiClient(HttpClient httpClient)
     }
 }
 
-public record AdventOfCodeDay(int DayId, IList<Puzzle> Puzzles)
+public record AdventOfCodeDay(int DayId, string LinkToAdventOfCodeDay, string LinkToSolutionCode, IList<Puzzle> Puzzles)
 {
-    public static AdventOfCodeDay EmptyDay(int dayId) => new(dayId, new List<Puzzle>());
+    public static AdventOfCodeDay EmptyDay(int dayId) => new(dayId, string.Empty, string.Empty, new List<Puzzle>());
 }
 
-public record Puzzle(int Type, string Name, IList<string> Input, string Solution, TimeSpan ElapsedRunTime)
+public record Puzzle(int Type, string Name, IList<string> Input, string Answer, TimeSpan ElapsedRunTime)
 {
     public static Puzzle EmptyPuzzle => new(-1, string.Empty, [], string.Empty, default);
 }

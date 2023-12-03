@@ -4,24 +4,50 @@
 @attribute [StreamRendering]
 
 @inject AdventOfCodeApiClient AdventOfCodeApi
+@inject NavigationManager NavigationManager
 
 <PageTitle>Day @DayId</PageTitle>
 
-<h1>Day @DayId Puzzle</h1>
+<h1>Day @DayId</h1>
 
-@if (daysPuzzleData is null)
+@if (_daysPuzzleData is null)
 {
     <p><em>Running puzzles...</em></p>
 }
 else
 {
+    <div class="btn-toolbar justify-content-between py-2">
+        <div class="btn-group py-2">
+            <NavLink class="btn btn-dark advent-of-code-title" href="@(_daysPuzzleData.LinkToAdventOfCodeDay)" target="_blank">
+                :: Advent of Code Day @DayId
+            </NavLink>
+        </div>
+        <div class="btn-group py-2">
+            <NavLink class="btn btn-secondary" href="@(_daysPuzzleData.LinkToSolutionCode)" target="_blank">
+                <i class="bi bi-github mx-2"></i> See my solution in C#
+            </NavLink>
+        </div>
+    </div>
+
+    @* <div class="d-grid gap-2 col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4">
+        <NavLink class="btn btn-dark advent-of-code-title" href="@(_daysPuzzleData.LinkToAdventOfCodeDay)" target="_blank">
+            :: Advent of Code Day @DayId
+        </NavLink>
+    </div>
+    
+    <div class="d-grid gap-2 col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4">
+        <NavLink class="btn btn-secondary" href="@(_daysPuzzleData.LinkToSolutionCode)" target="_blank">
+            <i class="bi bi-github"></i> See my solution in C# <i class="bi bi-box-arrow-up-right mx-3"></i>
+        </NavLink>
+    </div> *@
+
     <div class="card">
         <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs">
-                @foreach (var puzzle in daysPuzzleData.Puzzles)
+                @foreach (var puzzle in _daysPuzzleData.Puzzles)
                 {
                     <li class="nav-item">
-                        <button class="@(selectedPuzzle?.Type == puzzle.Type ? "nav-link active" : "nav-link")"
+                        <button class="@(_selectedPuzzle?.Type == puzzle.Type ? "nav-link active" : "nav-link")"
                            @onclick="() => SetSelectedPuzzle(puzzle.Type)"
                            @onclick:preventDefault
                            @onclick:stopPropagation>
@@ -31,35 +57,35 @@ else
                 }
             </ul>
         </div>
-        <PuzzleCardBody PuzzleDetails=selectedPuzzle />
+        <PuzzleCardBody PuzzleDetails=_selectedPuzzle />
     </div>
 }
 
 @code {
+    private AdventOfCodeDay? _daysPuzzleData;
+    private Puzzle? _selectedPuzzle;
+
     [Parameter]
     public int DayId { get; set; }
-    
-    private AdventOfCodeDay? daysPuzzleData;
-    private Puzzle? selectedPuzzle;
 
     protected override async Task OnInitializedAsync()
     {
-        if (daysPuzzleData is null)
+        if (_daysPuzzleData is null)
         {
-            daysPuzzleData = await AdventOfCodeApi.GetPuzzleDataForDay(DayId);
-            selectedPuzzle = daysPuzzleData.Puzzles.FirstOrDefault();
+            _daysPuzzleData = await AdventOfCodeApi.GetPuzzleDataForDay(DayId);
+            _selectedPuzzle = _daysPuzzleData.Puzzles.FirstOrDefault();
         }
     }
 
     private void SetSelectedPuzzle(int type)
     {
-        if (daysPuzzleData?.Puzzles is null || !daysPuzzleData.Puzzles.Any())
+        if (_daysPuzzleData?.Puzzles is null || !_daysPuzzleData.Puzzles.Any())
         {
             return;
         }
         else
         {
-            selectedPuzzle = daysPuzzleData.Puzzles.First(m => m.Type == type);
+            _selectedPuzzle = _daysPuzzleData.Puzzles.First(m => m.Type == type);
         }
     }
 }
