@@ -34,8 +34,48 @@ public class Day2 : SolutionBase
 
     private protected override string FinalSolutionForPartTwo(IList<string> puzzleInput)
     {
-        // TODO
-        return string.Empty;
+        int minRedCubes;
+        int minGreenCubes;
+        int minBlueCubes;
+        int sum = 0;
+
+        foreach (var input in puzzleInput)
+        {
+            minRedCubes = 0;
+            minGreenCubes = 0;
+            minBlueCubes = 0;
+
+            // [0] will be game number
+            // [1] will be game details
+            string[] inputSplit = input.Split(':', 2, StringSplitOptions.TrimEntries);
+
+            string[] allRevealedCubes = inputSplit[1].Split(_delimters, StringSplitOptions.TrimEntries);
+
+            foreach (var reveal in allRevealedCubes)
+            {
+                // [0] is count
+                // [1] is color
+                string[] revealInfo = reveal.Split(' ', 2, StringSplitOptions.None);
+                int revealCount = int.Parse(revealInfo[0]);
+
+                if (revealInfo[1][0] == 'r' && revealCount > minRedCubes)
+                {
+                    minRedCubes = revealCount;
+                }
+                else if (revealInfo[1][0] == 'g' && revealCount > minGreenCubes)
+                {
+                    minGreenCubes = revealCount;
+                }
+                else if (revealInfo[1][0] == 'b' && revealCount > minBlueCubes)
+                {
+                    minBlueCubes = revealCount;
+                }
+            }
+
+            sum += minRedCubes * minGreenCubes * minBlueCubes;
+        }
+
+        return $"{sum}";
     }
 
     private static bool IsPossibleGame(string inputSecondHalf)
