@@ -1,0 +1,32 @@
+<NavLink class="nav-link" href="@GetNavLinkHref(DayId)" Match="NavLinkMatch.All">
+    <i class="@GetNavLinkClasses(DayId)"></i> Day @DayId
+</NavLink>
+
+@code {
+    private static string _classesForCompletedDay = "bi bi-calendar-check mx-3 fs-4";
+    private static string _classesForIncompleteDay = "bi bi-calendar-x mx-3 fs-4";
+    private static HashSet<int> _completedDays = new HashSet<int> { 1 };
+    
+    [Parameter]
+    public int DayId { get; set; }
+
+    private static bool IsDayComplete(int dayId)
+    {
+        if (dayId < 1 || dayId > 25)
+        {
+            throw new ArgumentOutOfRangeException(nameof(dayId), dayId, null);
+        }
+
+        return _completedDays.Contains(dayId);
+    }
+
+    private static string GetNavLinkClasses(int dayId)
+    {
+        return IsDayComplete(dayId) ? _classesForCompletedDay : _classesForIncompleteDay;
+    }
+
+    private static string GetNavLinkHref(int dayId)
+    {
+        return IsDayComplete(dayId) ? $"day/{dayId}" : "#";
+    }
+}
