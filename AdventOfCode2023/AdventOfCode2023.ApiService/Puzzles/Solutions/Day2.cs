@@ -1,10 +1,11 @@
-using System.Text;
-
 namespace AdventOfCode2023.ApiService.Puzzles.Solutions;
 
 public class Day2 : SolutionBase
 {
-    private static readonly StringBuilder _stringBuilder = new();
+    private static readonly char[] _delimters = [',', ';'];
+    private static readonly int _maxRedCubes = 12;
+    private static readonly int _maxGreenCubes = 13;
+    private static readonly int _maxBlueCubes = 14;
 
     public Day2() : base(nameof(Day2))
     {
@@ -16,9 +17,16 @@ public class Day2 : SolutionBase
 
         foreach (var input in puzzleInput)
         {
-            int gameNumber = GetGameNumber(input);
+            // [0] will be game number
+            // [1] will be game details
+            string[] inputSplit = input.Split(':', 2, StringSplitOptions.TrimEntries);
 
-            sum += gameNumber;
+            int gameNumber = GetGameNumber(inputSplit[0]);
+
+            if (IsPossibleGame(inputSplit[1]))
+            {
+                sum += gameNumber;
+            }
         }
 
         return $"{sum}";
@@ -30,22 +38,37 @@ public class Day2 : SolutionBase
         return string.Empty;
     }
 
-    private static int GetGameNumber(string input)
+    private static bool IsPossibleGame(string inputSecondHalf)
     {
-        _stringBuilder.Clear();
+        string[] allRevealedCubes = inputSecondHalf.Split(_delimters, StringSplitOptions.TrimEntries);
 
-        for (int i = 5; i < input[5..].Length; i++)
+        foreach (var reveal in allRevealedCubes)
         {
-            if (input[i] == ':')
+            // [0] is count
+            // [1] is color
+            string[] revealInfo = reveal.Split(' ', 2, StringSplitOptions.None);
+            int revealCount = int.Parse(revealInfo[0]);
+
+            if (revealInfo[1][0] == 'r' && revealCount > _maxRedCubes)
             {
-                break;
+                return false;
             }
-            else
+            else if (revealInfo[1][0] == 'g' && revealCount > _maxGreenCubes)
             {
-                _stringBuilder.Append(input[i]);
+                return false;
+            }
+            else if (revealInfo[1][0] == 'b' && revealCount > _maxBlueCubes)
+            {
+                return false;
             }
         }
 
-        return int.Parse(_stringBuilder.ToString());
+        return true;
+    }
+
+    private static int GetGameNumber(string inputFirstHalf)
+    {
+        // drop 'Game ' from first half of full game input
+        return int.Parse(inputFirstHalf[5..]);
     }
 }
