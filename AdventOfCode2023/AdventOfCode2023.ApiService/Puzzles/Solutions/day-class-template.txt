@@ -1,0 +1,20 @@
+namespace AdventOfCode2023.ApiService.Puzzles.Solutions;
+
+public class DayX : SolutionBase
+{
+    public DayX() : base(nameof(DayX))
+    {
+    }
+
+    private protected override string InitialSolutionForPartOne(IList<string> puzzleInput)
+    {
+        // TODO
+        return string.Empty;
+    }
+
+    private protected override string FinalSolutionForPartTwo(IList<string> puzzleInput)
+    {
+        // TODO
+        return string.Empty;
+    }
+}
