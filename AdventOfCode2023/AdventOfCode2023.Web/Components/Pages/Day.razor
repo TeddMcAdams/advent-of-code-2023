@@ -29,29 +29,12 @@ else
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs">
-                @foreach (var puzzle in _daysPuzzleData.Puzzles)
-                {
-                    <li class="nav-item">
-                        <button class="@(_selectedPuzzle?.Type == puzzle.Type ? "nav-link active" : "nav-link")"
-                        @onclick="() => SetSelectedPuzzle(puzzle.Type)"
-                        @onclick:preventDefault
-                        @onclick:stopPropagation>
-                                @puzzle.Name
-                        </button>
-                    </li>
-                }
-            </ul>
-        </div>
-        <PuzzleCardBody PuzzleDetails=_selectedPuzzle />
-    </div>
+    <SolutionsCard Solutions=_daysPuzzleData.Solutions ExampleInput=_daysPuzzleData.ExampleInput Input=_daysPuzzleData.Input />
 }
 
 @code {
     private AdventOfCodeDay? _daysPuzzleData;
-    private Puzzle? _selectedPuzzle;
+
 
     [Parameter]
     public int DayId { get; set; }
@@ -61,19 +44,8 @@ else
         if (_daysPuzzleData is null)
         {
             _daysPuzzleData = await AdventOfCodeApi.GetPuzzleDataForDay(DayId);
-            _selectedPuzzle = _daysPuzzleData.Puzzles.FirstOrDefault();
         }
     }
 
-    private void SetSelectedPuzzle(int type)
-    {
-        if (_daysPuzzleData?.Puzzles is null || !_daysPuzzleData.Puzzles.Any())
-        {
-            return;
-        }
-        else
-        {
-            _selectedPuzzle = _daysPuzzleData.Puzzles.First(m => m.Type == type);
-        }
-    }
+
 }

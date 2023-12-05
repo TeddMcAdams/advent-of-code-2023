@@ -16,6 +16,13 @@ h1:focus {
     color: #e50990;
 }
 
+.puzzle-input {
+    font-family: "Source Code Pro", monospace;
+    white-space: pre;
+    overflow-wrap: normal;
+    overflow-x: scroll;
+}
+
 .advent-of-code-title {
     font-family: "Source Code Pro", monospace;
     display: inline-block;

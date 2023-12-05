@@ -22,7 +22,7 @@ app.MapGet("/day/{id}", (SolutionResolver solutionResolver, int id) =>
 {
     if (id < 1 || id > 25)
     {
-        return new AdventOfCodeDay(0, string.Empty, string.Empty, []);
+        return new AdventOfCodeDay(0, string.Empty, string.Empty, [], [], []);
     }
 
     var solution = solutionResolver(id);
@@ -36,58 +36,35 @@ app.MapGet("/day/{id}", (SolutionResolver solutionResolver, int id) =>
     var exampleAnswer = solution.SolveExample(exampleInput);
     exampleStopWatch.Stop();
     
-    Puzzle examplePuzzle = new(SolutionType.Example, SolutionType.Example.ToFriendlyName(), exampleInput, exampleAnswer, exampleStopWatch.Elapsed);
+    Solution examplePuzzle = new(SolutionType.Example, SolutionType.Example.ToFriendlyName(), exampleAnswer, exampleStopWatch.Elapsed);
     
     // run part one solution
     var partOneStopWatch = Stopwatch.StartNew();
     var partOneAnswer = solution.SolvePartOne(input);
     partOneStopWatch.Stop();
     
-    Puzzle partOnePuzzle = new(SolutionType.PartOne, SolutionType.PartOne.ToFriendlyName(), input, partOneAnswer, partOneStopWatch.Elapsed);
+    Solution partOnePuzzle = new(SolutionType.PartOne, SolutionType.PartOne.ToFriendlyName(), partOneAnswer, partOneStopWatch.Elapsed);
 
     // run part two solution
     var partTwoStopWatch = Stopwatch.StartNew();
     var partTwoAnswer = solution.SolvePartTwo(input);
     partTwoStopWatch.Stop();
 
-    Puzzle partTwoPuzzle = new(SolutionType.PartTwo, SolutionType.PartTwo.ToFriendlyName(), input, partTwoAnswer, partTwoStopWatch.Elapsed);
+    Solution partTwoPuzzle = new(SolutionType.PartTwo, SolutionType.PartTwo.ToFriendlyName(), partTwoAnswer, partTwoStopWatch.Elapsed);
 
-    return new AdventOfCodeDay(id, solution.LinkToAdventOfCodeDay, solution.LinkToSolutionCode, new List<Puzzle> { examplePuzzle, partOnePuzzle, partTwoPuzzle });
+    return new AdventOfCodeDay(id, solution.LinkToAdventOfCodeDay, solution.LinkToSolutionCode, new List<Solution> { examplePuzzle, partOnePuzzle, partTwoPuzzle }, exampleInput, input);
 });
 
 app.MapDefaultEndpoints();
 
 app.Run();
 
-record AdventOfCodeDay(int DayId, string LinkToAdventOfCodeDay, string LinkToSolutionCode, IList<Puzzle> Puzzles)
+record AdventOfCodeDay(int DayId, string LinkToAdventOfCodeDay, string LinkToSolutionCode, IList<Solution> Solutions, IList<string> ExampleInput, IList<string> Input)
 {
 
 }
 
-record Puzzle(SolutionType Type, string Name, IList<string> Input, string Answer, TimeSpan ElapsedRunTime)
+record Solution(SolutionType Type, string Name, string Answer, TimeSpan ElapsedRunTime)
 {
 
 }
-
-// var summaries = new[]
-// {
-//     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-// };
-
-// app.MapGet("/weatherforecast", () =>
-// {
-//     var forecast =  Enumerable.Range(1, 5).Select(index =>
-//         new WeatherForecast
-//         (
-//             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-//             Random.Shared.Next(-20, 55),
-//             summaries[Random.Shared.Next(summaries.Length)]
-//         ))
-//         .ToArray();
-//     return forecast;
-// });
-
-// record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-// {
-//     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-// }

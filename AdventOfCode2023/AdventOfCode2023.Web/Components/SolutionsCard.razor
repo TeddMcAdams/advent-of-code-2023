@@ -1,0 +1,95 @@
+@using System.Text;
+
+<div class="card">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+            @foreach (var solution in Solutions)
+            {
+                <li class="nav-item">
+                    <button class="@(_selectedSolution?.Type == solution.Type ? "nav-link active" : "nav-link")"
+                    type="button"
+                    @onclick="() => SetSelectedSolution(solution.Type)"
+                    @onclick:preventDefault
+                    @onclick:stopPropagation>
+                            @solution.Name
+                    </button>
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Answer: <code>@(_selectedSolution?.Answer ?? string.Empty)</code></h5>
+        <h6 class="card-subtitle pb-2 text-muted">Run time: <code>@(_selectedSolution?.ElapsedRunTime.ToString() ?? string.Empty)</code></h6>
+    </div>
+</div>
+
+<div class="py-2">
+    <h6>Puzzle Input</h6>
+    <div class="input-group pt-6">
+        <textarea disabled class="form-control puzzle-input" title="Puzzle input" placeholder="" style="width:500px;height:400px;word-wrap:normal;">@(_textAreaValue)</textarea>
+    </div>
+</div>
+
+@code {
+    private static readonly StringBuilder _stringBuilder = new StringBuilder();
+
+    private Solution? _selectedSolution;
+    private string _textAreaValue = "SUH";
+    private string _exampleInput = string.Empty;
+    private string _input = string.Empty;
+
+    [Parameter]
+    public IList<string> ExampleInput { get; set; } = [];
+
+    [Parameter]
+    public IList<string> Input { get; set; } = [];
+
+    [Parameter]
+    public IList<Solution> Solutions { get; set; } = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        int exampleSolutionType = await Task.FromResult<int>(1);
+
+        _exampleInput = ConvertInputCollectionToString(ExampleInput);
+        _input = ConvertInputCollectionToString(Input);
+
+        _selectedSolution = Solutions.FirstOrDefault(m => m.Type == exampleSolutionType);
+        _textAreaValue = _exampleInput;
+    }
+
+    private void SetSelectedSolution(int type)
+    {
+        if (Solutions is null || !Solutions.Any())
+        {
+            return;
+        }
+        else
+        {
+            _selectedSolution = Solutions.First(m => m.Type == type);
+
+            _textAreaValue = type == 1
+                ? _exampleInput
+                : _input;
+        }
+    }
+
+    private string ConvertInputCollectionToString(IList<string> input)
+    {
+        _stringBuilder.Clear();
+
+        for (int i = 0; i < input.Count; i++)
+        {
+            if (i + 1 == input.Count)
+            {
+                _stringBuilder.Append(input[i]);
+            }
+            else
+            {
+                _stringBuilder.AppendLine(input[i]);
+            }
+        }
+
+        return _stringBuilder.ToString();
+    }
+}
