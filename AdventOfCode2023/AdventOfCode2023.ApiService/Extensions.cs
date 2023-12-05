@@ -8,7 +8,7 @@ public static class Extensions
     {
         services.AddSingleton<Day1>();
         services.AddSingleton<Day2>();
-        // services.AddSingleton<Day3>();
+        services.AddSingleton<Day3>();
         // services.AddSingleton<Day4>();
         // services.AddSingleton<Day5>();
         // services.AddSingleton<Day6>();
@@ -38,7 +38,7 @@ public static class Extensions
             {
                 1 => serviceProvider.GetRequiredService<Day1>(),
                 2 => serviceProvider.GetRequiredService<Day2>(),
-                // 3 => serviceProvider.GetRequiredService<Day3>(),
+                3 => serviceProvider.GetRequiredService<Day3>(),
                 // 4 => serviceProvider.GetRequiredService<Day4>(),
                 // 5 => serviceProvider.GetRequiredService<Day5>(),
                 // 6 => serviceProvider.GetRequiredService<Day6>(),
